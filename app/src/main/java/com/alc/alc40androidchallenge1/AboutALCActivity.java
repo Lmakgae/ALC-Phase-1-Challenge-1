@@ -1,6 +1,8 @@
 package com.alc.alc40androidchallenge1;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -19,6 +22,7 @@ import java.util.Objects;
 
 public class AboutALCActivity extends AppCompatActivity {
 
+    private Context mContext = AboutALCActivity.this;
     private WebView webview;
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -44,12 +48,48 @@ public class AboutALCActivity extends AppCompatActivity {
 
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                Toast.makeText(AboutALCActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, error.toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                handler.proceed();
+            public void onReceivedSslError(WebView view, final SslErrorHandler handler, SslError error) {
+
+                final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                String message = "SSL Certificate error.";
+                switch (error.getPrimaryError()) {
+                    case SslError.SSL_UNTRUSTED:
+                        message = "The certificate authority is not trusted.";
+                        break;
+                    case SslError.SSL_EXPIRED:
+                        message = "The certificate has expired.";
+                        break;
+                    case SslError.SSL_IDMISMATCH:
+                        message = "The certificate Hostname mismatch.";
+                        break;
+                    case SslError.SSL_NOTYETVALID:
+                        message = "The certificate is not yet valid.";
+                        break;
+                }
+                message += " Do you want to continue anyway?";
+
+                builder.setTitle("SSL Certificate Error");
+                builder.setMessage(message);
+
+                builder.setPositiveButton("continue", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        handler.proceed();
+                    }
+                });
+                builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        handler.cancel();
+                    }
+                });
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+
             }
         });
         webview.getSettings().setJavaScriptEnabled(true);
