@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">ALC4.0: Android Challenge 1</string>
+    <string name="title_activity_about_alc">About ALC</string>
+    <string name="title_alc">ALC 4 Phase 1</string>
+    <string name="title_activity_my_profile">"My Profile "</string>
+    <string name="welcome_to_alc_4_0">Welcome to ALC 4.0</string>
+    <string name="about_alc">About ALC</string>
+    <string name="my_profile">My Profile</string>
+    <string name="profile_picture">Profile Picture</string>
+    <string name="track_android">Track: \t\t Android</string>
+    <string name="country_south_africa">Country: \t\t South Africa</string>
+    <string name="email_hlogimakgae_gmail_com">Email: \t\t hlogimakgae@gmail.com</string>
+    <string name="phone_number_0623574479">Phone Number: \t\t +27623574479</string>
+    <string name="slack_username_lehlogonolo_makgae">Slack Username: \t\t Lehlogonolo Makgae</string>
+    <string name="lehlogonolo_makgae">Lehlogonolo Makgae</string>
+</resources>
